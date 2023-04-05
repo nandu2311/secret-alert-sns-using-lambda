@@ -18,13 +18,10 @@ def respond(err, res=None):
 def lambda_handler(event, context):
 
     cloudwatch_data = event['awslogs']['data']
-    #cw_data = str(event['awslogs']['data'])
-    #cw_logs = gzip.Gzipfile(fileobj=BytesIO(base64.b64decode(cloudwatch_data, validate=True))).read()
     compressed_payload = base64.b64decode(cloudwatch_data)
     uncompressed_payload = gzip.decompress(compressed_payload)
     payload = json.loads(uncompressed_payload)
     log_events = payload['logEvents']
-    #log_events = json.loads(cw_logs)
     for log_event in log_events:
         a = log_event['message']
     print(a)
@@ -35,7 +32,11 @@ def lambda_handler(event, context):
     nameevent = log_events_data['eventName']
     user = log_events_data['userIdentity']['principalId']
     secret = log_events_data['requestParameters']['secretId']
-    msg = "Hi Team, We have detected the %s event from AWS Secret Manager Service with below Details: Event Source- %s  Event Name- %s  User- %s    Secret-Id- %s " % (nameevent,source,nameevent,user,secret) 
+    msg = "Hi Team, We have detected the %s event from AWS Secret Manager Service with below Details: \
+        \n Event Source- %s  \
+        \n Event Name- %s  \
+        \n User- %s    \
+        \n Secret-Id- %s " % (nameevent,source,nameevent,user,secret) 
     subj = "AWS Notification Message for AWS Secret Event"
 
 

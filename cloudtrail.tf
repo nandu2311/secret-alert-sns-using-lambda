@@ -29,7 +29,7 @@ resource "aws_cloudtrail" "secret-sns" {
 
   # sendint events to Cloudwatch logs group 
   cloud_watch_logs_role_arn  = aws_iam_role.cloudtrail_cloudwatch_role.arn
-  cloud_watch_logs_group_arn =  "${aws_cloudwatch_log_group.secret-sns-logs.arn}:*"
+  cloud_watch_logs_group_arn = "${aws_cloudwatch_log_group.secret-sns-logs.arn}:*"
 
 
 
@@ -73,23 +73,23 @@ resource "aws_iam_role" "cloudtrail_cloudwatch_role" {
   name = "cloudtrail_cloudwatch_role"
 
   assume_role_policy = jsonencode(
-{
-  "Version": "2012-10-17",
-  "Statement": [
     {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "cloudtrail.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Effect" : "Allow",
+          "Principal" : {
+            "Service" : "cloudtrail.amazonaws.com"
+          },
+          "Action" : "sts:AssumeRole"
+        }
+      ]
+  })
+
+
+  depends_on = [
+    aws_cloudwatch_log_group.secret-sns-logs,
   ]
-})
-
-
-depends_on = [
-  aws_cloudwatch_log_group.secret-sns-logs,
-]
 }
 
 data "aws_iam_policy_document" "s3_bucket_policy" {
@@ -152,7 +152,7 @@ resource "aws_s3_bucket_policy" "secret-sns-attach-policy" {
 }
 
 resource "aws_cloudwatch_log_group" "secret-sns-logs" {
-  name = "lambda/secret_lambda_function"
+  name = "secret-sns-logs"
 
 }
 
