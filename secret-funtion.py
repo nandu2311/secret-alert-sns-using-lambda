@@ -37,11 +37,11 @@ def lambda_handler(event, context):
         \n Event Name- %s  \
         \n User- %s    \
         \n Secret-Id- %s " % (nameevent,source,nameevent,user,secret) 
-    subj = "AWS Notification Message for AWS Secret Event"
+    subj = "Notification of Access Secret Manager"
 
 
     if 'DescribeSecret' in nameevent:
-        MY_SNS_TOPIC_ARN = os.environ['snstopicarn'] # mention here SNS Topic ARN Name
+        MY_SNS_TOPIC_ARN = os.environ['secretsnstopic'] # mention here SNS Topic ARN Name
         sns_client = boto3.client('sns')
         sns_client.publish(
             TopicArn = MY_SNS_TOPIC_ARN,
@@ -49,6 +49,6 @@ def lambda_handler(event, context):
             Message = msg
         )
 
-        return respond(None, "Thanks for using this command. Sending Mail.......")
+        return respond(None, "Thanks for using this command")
     else:
-        return respond(None, "Thanks for using this Function but event detected is diff:%s" % (nameevent))
+        return respond(None, "event detected is diff:%s" % (nameevent))

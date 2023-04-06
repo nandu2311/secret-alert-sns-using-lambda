@@ -24,7 +24,7 @@ resource "aws_lambda_function" "secret_lambda_function" {
 
   environment {
     variables = {
-      snstopicarn = aws_sns_topic.send-msg-topic.arn
+      secretsnstopic = aws_sns_topic.send-msg-topic.arn
     }
   }
 }
